@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">BlogReader</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+	<string name="no_item">No item to desplay</string>
+	
+	<string-array name="android_name">
+	   <item>Rajesh</item>
+	   <item>Vaibhav</item>
+	   <item>Ravi</item>
+	   <item>Arpit</item>
+	</string-array>
+    
+</resources>

@@ -8,7 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.ListActivity;
@@ -28,6 +28,7 @@ public class MainListActivity extends ListActivity {
 	protected String[] mBlogPostTitles;
 	public static final int NUMBER_OF_POSTS = 20;
 	public static final String TAG = MainListActivity.class.getSimpleName();
+	protected JSONObject mBlogData;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +72,20 @@ public class MainListActivity extends ListActivity {
 		getMenuInflater().inflate(R.menu.main_list, menu);
 		return true;
 	}
+	
+	public void updateList() {
+		if (mBlogData == null){
+			
+		}
+		else{
+			try {
+				Log.d(TAG, mBlogData.toString(2));
+			} catch (JSONException e) {
+				Log.d(TAG, "Expetion caugch!", e);
+			}
+		}
+		
+	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -84,11 +99,12 @@ public class MainListActivity extends ListActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	private class GetBlogPostsTask extends AsyncTask<Object, Void, String> {
+	private class GetBlogPostsTask extends AsyncTask<Object, Void, JSONObject> {
 
 		@Override
-		protected String doInBackground(Object... arg0) {
+		protected JSONObject doInBackground(Object... arg0) {
 			int responseCode = -1;
+			JSONObject jsonResponse = null;
 			try{
 				URL blogFeedUrl = new URL("http://blog.teamtreehouse.com/api/get_recent_summary/?count=" + NUMBER_OF_POSTS);
 				HttpURLConnection connection = (HttpURLConnection) blogFeedUrl.openConnection(); 
@@ -103,8 +119,8 @@ public class MainListActivity extends ListActivity {
 					String responseData = new String( charArray );
 					//Log.v(TAG,responseData);
 					
-					JSONObject jsonResponse = new JSONObject(responseData);
-					String status = jsonResponse.getString("status");
+					jsonResponse = new JSONObject(responseData);
+				/*	String status = jsonResponse.getString("status");
 					Log.v(TAG, status);
 					
 					JSONArray jsonPosts = jsonResponse.getJSONArray("posts");
@@ -112,11 +128,11 @@ public class MainListActivity extends ListActivity {
 						JSONObject jsonPost = jsonPosts.getJSONObject(i);
 						String title = jsonPost.getString("title");
 						Log.v(TAG, "Post " + i+ ":" + title);
-					}
+					}*/
 					
 				}
 				else{
-					Log.i(TAG, "Unsucefull responce coade: " + responseCode);
+					Log.i(TAG, "Unsucefull HTTP responce coade: " + responseCode);
 				}
 				
 			}
@@ -129,9 +145,15 @@ public class MainListActivity extends ListActivity {
 			catch(Exception e){
 				Log.e(TAG, "Exception caught: ", e);
 			}
-			return "Code: " + responseCode;
+			return jsonResponse;
 		}
-		
+		@Override
+		protected void onPostExecute(JSONObject result){
+			mBlogData = result;
+			updateList();
+		}
 	}
+
+	
 
 }

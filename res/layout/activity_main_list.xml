@@ -4,6 +4,13 @@
     android:layout_height="match_parent"
     tools:context="com.rajvaibhav.blogreader.MainListActivity$PlaceholderFragment" >
 
+    <TextView
+        android:id="@android:id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" />
+
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
@@ -11,11 +18,12 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true" >
     </ListView>
-    <TextView android:id="@android:id/empty"
-        android:layout_width="match_parent"
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:text="@string/no_item"/>        
+        android:layout_centerInParent="true"/>
 
 </RelativeLayout>
